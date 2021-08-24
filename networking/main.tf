@@ -15,3 +15,25 @@ resource "aws_vpc" "mtc_vpc" {
     Name = "awsk8s-${random_integer.random.id}"
   }
 }
+
+
+resource "aws_subnet" "mtc_public_subnet" {
+  count = length(var.public_cidrs)
+  vpc_id     = aws_vpc.mtc_vpc.id
+  cidr_block = var.public_cidrs[count.index]
+  map_public_ip_on_launch = true
+  availability_zone = ["ap-south-1a", "ap-south-1b", "ap-south-1c"][count.index] 
+  tags = {
+    Name = "mtc_public_subnet-${count.index + 1}"
+  }
+}
+
+resource "aws_subnet" "mtc_private_subnet" {
+  count = length(var.private_cidrs)
+  vpc_id     = aws_vpc.mtc_vpc.id
+  cidr_block = var.private_cidrs[count.index]
+  availability_zone = ["ap-south-1a", "ap-south-1b", "ap-south-1c"][count.index] 
+  tags = {
+    Name = "mtc_private_subnet-${count.index + 1}"
+  }
+}
