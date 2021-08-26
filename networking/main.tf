@@ -119,3 +119,15 @@ resource "aws_security_group" "mtc_sg" {
     Name = "Manan_sg"
   }
 }
+
+
+
+resource "aws_db_subnet_group" "mtc_rds_subnetgroup" {
+  count      = var.db_subnet_group == true ? 1 : 0
+  name       = "manan_rds_subnetgroup"
+  subnet_ids = aws_subnet.mtc_private_subnet.*.id
+
+  tags = {
+    Name = "manan_rds_subnetgroup"
+  }
+}

@@ -9,7 +9,21 @@ module "networking" {
   max_subnets      = 20
   security_groups  = local.security_groups
   # providing entire dictionary for ip
-  public_cidrs  = [for i in range(2, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
-  private_cidrs = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
+  public_cidrs    = [for i in range(2, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
+  private_cidrs   = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
+  db_subnet_group = true
 }
 
+module "database" {
+source = "./database"
+db_storage = 10
+db_engine_version = "5.7.22"
+db_instance_class = "db.t2.micro"
+dbname = "ranche"
+dbuser = "manan"
+dbpassword = "manansankhla"
+db_subnet_group_name =  ""
+vpc_security_group_ids = []
+db_identifier = "mtc-db"
+skip_db_snapshot = true
+}
