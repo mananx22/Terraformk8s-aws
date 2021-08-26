@@ -19,11 +19,11 @@ module "database" {
   db_storage             = 10
   db_engine_version      = "5.7.22"
   db_instance_class      = "db.t2.micro"
-  dbname                 = "ranche"
-  dbuser                 = "manan"
-  dbpassword             = "manansankhla"
-  db_subnet_group_name   = ""
-  vpc_security_group_ids = []
+  dbname                 = var.db_name
+  dbuser                 = var.db_user
+  dbpassword             = var.db_pass
+  db_subnet_group_name   = module.networking.db_subnet_group_name[0]
+  vpc_security_group_ids = module.networking.db_security_group
   db_identifier          = "mtc-db"
   skip_db_snapshot       = true
 }

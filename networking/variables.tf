@@ -12,6 +12,8 @@ variable "private_cidrs" {
   type = list(any)
 }
 
+
+
 variable "public_sn_count" {
   type = number
 }
